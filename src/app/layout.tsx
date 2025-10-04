@@ -1,16 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
-});
+import Link from "next/link";
 
 export const metadata: Metadata = {
 	title: "p5.js Next.js Wrapper",
@@ -26,8 +16,38 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable}`}>
-				{children}
+			<body
+				style={{
+					display: "flex",
+					flexDirection: "column",
+					minHeight: "100dvh",
+				}}
+			>
+				<header style={{ textAlign: "center", padding: "1em" }}>
+					<h1>
+						Next.js (App Router, TypeScript) p5.js Sketch Component Wrapper
+					</h1>
+					<nav>
+						<Link href="/">home</Link> |{" "}
+						<Link href="/animation-example">animation example</Link>
+					</nav>
+				</header>
+				<hr />
+				<main style={{ flexGrow: 1, margin: "1em" }}>{children}</main>
+				<footer style={{ padding: "1em", textAlign: "center" }}>
+					<hr />
+					<br />
+					<p>
+						&copy; 2025 Vadim Gierko [
+						<a
+							href="https://github.com/vadimgierko/p5-next-js-react-wrapper"
+							target="_blank"
+						>
+							see the code
+						</a>
+						]
+					</p>
+				</footer>
 			</body>
 		</html>
 	);
