@@ -8,6 +8,18 @@ export type SketchProps = {
 	play: Play;
 };
 
+/**
+ * Equivalent of sketch.js file in p5 Editor /
+ * p5 template project/repo (index.html, sketch.js, style.css).
+ *
+ * This function has access to p5 lib instance passed via ref in higher order P5Sketch component,
+ * which also can control this p5 instance, for example no/loop(), what it does in this case.
+ *
+ * This function also gets passed React state updates & can react accordingly to it.
+ *
+ * @param propsRef
+ * @returns
+ */
 export function sketch(propsRef: { current: SketchProps }) {
 	return function (p: p5) {
 		// global vars for p5:
@@ -31,8 +43,8 @@ export function sketch(propsRef: { current: SketchProps }) {
 
 			// this is the way to stop animation, but...
 			// this doesn't stop the drawing loop!!!
-			x = play ? (x + speed) % p.width : x;
-			// x = (x + speed) % p.width;
+			// x = play ? (x + speed) % p.width : x;
+			x = (x + speed) % p.width;
 
 			// notify React with current state
 			onxPosUpdate({ x });

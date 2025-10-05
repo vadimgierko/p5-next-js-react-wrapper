@@ -4,10 +4,14 @@ import { useRef, useEffect } from "react";
 import { sketch, SketchProps } from "@/components/P5Sketch/sketch";
 import type p5 from "p5";
 
+/**
+ * This is the kingdom / island of p5 - p5.js lib lives only here & not outside.
+ *
+ * This component gets passed React state, wraps & controls p5 canvas accordingly to React state updates.
+ */
 export function P5Sketch({ speed, color, onxPosUpdate, play }: SketchProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
-	// Use 'any' to store the p5 instance, or import and use the correct p5 type if available
-	const sketchRef = useRef<p5 | null>(null); // p5 type avoided here
+	const sketchRef = useRef<p5 | null>(null);
 	const propsRef = useRef<SketchProps>({ speed, color, onxPosUpdate, play });
 
 	propsRef.current = { speed, color, onxPosUpdate, play };
@@ -22,6 +26,9 @@ export function P5Sketch({ speed, color, onxPosUpdate, play }: SketchProps) {
 			if (containerRef.current && !sketchRef.current) {
 				p5Instance = new P5(sketch(propsRef), containerRef.current);
 				sketchRef.current = p5Instance;
+				//==================
+				console.log("isLooping:", sketchRef.current.isLooping());
+				console.log("frameRate:", sketchRef.current.frameRate());
 			}
 		})();
 
@@ -33,5 +40,22 @@ export function P5Sketch({ speed, color, onxPosUpdate, play }: SketchProps) {
 		};
 	}, []);
 
+	useEffect(() => {
+		console.log("play:", play);
+
+		if (sketchRef.current) {
+			if (!play) {
+				sketchRef.current.noLoop();
+			} else {
+				sketchRef.current.loop();
+			}
+			console.log("isLooping:", sketchRef.current.isLooping());
+			console.log("frameRate:", sketchRef.current.frameRate());
+		}
+	}, [play]);
+
+	{
+		/** div below wraps p5 generated canvas */
+	}
 	return <div ref={containerRef}></div>;
 }
